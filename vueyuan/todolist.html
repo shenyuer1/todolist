@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.js"></script>
+</head>
+<style>
+    *{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    #root{
+        width: 600px;
+        height: auto;
+        margin: 0 auto;
+    }
+    .box{
+        width: 100%;
+        height: auto;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    .in{
+        width: 400px;
+        height: 30px;
+        display: block;
+        border: 1px solid #666;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        padding: 0px 5px;
+        box-sizing: border-box;
+    }
+    .list{
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-content: space-around;
+        flex-wrap: wrap;
+    }
+    .list>li{
+        width: 100%;
+        height: 40px;
+        padding: 5px;
+        box-sizing: border-box;
+        border-bottom: 1px solid #666;
+    }
+    .list>li span{
+        width: 10px;
+        height: 10px;
+        margin-top: 10px;
+        float: left;
+        border-radius: 50%;
+        border: 1px solid #666;
+        margin-right: 50px;
+    }
+    .list>li p{
+        text-align: center;
+        line-height: 30px;
+        float: left;
+    }
+    button{
+        float: right;
+        width: 50px;
+        height: 30px;
+        border: none;
+        outline: none;
+        background: #666;
+        color: #fff;
+        text-align: center;
+        line-height: 20px;
+        border-radius: 4px;
+        margin-left: 10px;
+    }
+    .check{
+        background: red;
+    }
+    .select{
+        color: red;
+    }
+    div{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<body>
+<div id="root">
+    <div class="box">
+        <input v-model="con" v-focus class="in" type="text" @keyup.13="add" placeholder="请输入待办事项">
+        <div class="anniu">
+            <button @click="statechange('0')" :class="{select:state=='0'}">未完成</button>
+            <button @click="statechange('1')" :class="{select:state=='1'}">已完成</button>
+            <button @click="statechange('all')" :class="{select:state=='all'}">全部</button>
+        </div>
+        <ul class="list">
+            <li v-for="item in data" >
+                <div v-if="item.edit==0" @dblclick="edit(item)">
+                    <span class="opt" @click="stachange(item)" :class="{check:item.status==1}"></span>
+                    <p >{{item.title}}</p>
+                    <button @click="del(item)">删除</button>
+                </div>
+                <div v-else="" >
+                    <input @blur="edit(item)" type="text" v-model="item.title" >
+                </div>
+            </li>
+        </ul>
+        <div class="tips" v-show="data.length==0">暂时没有数据</div>
+    </div>
+</div>
+</body>
+<script>
+
+    Vue.directive('focus', {
+        inserted: function (val1,val2) {
+            val1.focus();
+        },
+    })
+    let app=new Vue({
+        el:"#root",
+        data:{
+            con:"",
+            all:localStorage.todos?JSON.parse(localStorage.todos):[],
+            state:'all',
+            data:[]
+        },
+        methods:{
+            add(){
+                if(this.con==""){
+                    alert("输入字符不能为空");
+                    return;
+                }
+                let obj={};
+                obj.title=this.con;
+                obj.id=Math.random()+new Date().getTime();
+                obj.status=0;
+                obj.edit=0;
+                this.all.push(obj);
+                localStorage.todos=JSON.stringify(this.all);
+                this.con="";
+            },
+            del(item){
+                this.data=this.data.filter(ele=>ele.id!=item.id);
+                this.all=this.all.filter(ele=>ele.id!=item.id);
+            },
+            stachange(item){
+                if(item.status==0){
+                    item.status=1;
+                }else if(item.status==1){
+                    item.status=0;
+                }
+                console.log(item.status);
+            },
+            edit(item){
+                item.edit=!item.edit;
+            },
+            statechange(str){
+                this.state=str;
+                this.datachange();
+
+            },
+            datachange(){
+
+                if(this.state=="all"){
+                    this.data=this.all;
+                }else if(this.state=="0"){
+                    this.data=this.all.filter(ele=>ele.status==0);
+                }else if(this.state=="1"){
+                    this.data=this.all.filter(ele=>ele.status==1);
+                }
+            }
+        },
+        created(){
+            this.datachange();
+        },
+
+    })
+</script>
+</html>

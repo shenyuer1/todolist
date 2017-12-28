@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.js"></script>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .selectbox{
+        width: 400px;
+        height: auto;
+        margin: 0 auto;
+        padding: 20px 0px;
+        box-sizing: border-box;
+    }
+    .inputbox{
+        width: 400px;
+        height: 40px;
+        margin: 0 auto;
+    }
+    input{
+        width: 400px;
+        height: 40px;
+        border: 1px solid #666;
+        outline: none;
+        border-radius: 4px;
+        padding: 0 5px;
+        box-sizing: border-box;
+        line-height: 40px;
+    }
+    .list{
+        width: 100%;
+        height: auto;
+    }
+    .list>li{
+        width: 100%;
+        height: 40px;
+        border-bottom: 1px solid #666;
+        line-height: 40px;
+    }
+</style>
+<body>
+<div id="root">
+    <div class="selectbox">
+        <div class="inputbox">
+            <input type="text" @focus="focus" @blur="blur" v-model="title">
+        </div>
+        <ul class="list" v-show="status==true">
+            <li v-for="item in all" @click="click(item)">{{item.title}}</li>
+        </ul>
+    </div>
+</div>
+</body>
+<script>
+    let root=new Vue({
+        el:"#root",
+        data:{
+          all:[
+              {id:1, title:"111111"},
+              {id:2, title:"222222"},
+              {id:3, title:"333333"}
+             ],
+          status:false,
+            title:"",
+        },
+        methods:{
+            focus(){
+                this.status=true;
+            },
+            blur(){
+//                this.status=false;
+            },
+            click(item){
+                this.title=item.title;
+                this.status=false;
+            }
+        },
+
+    })
+</script>
+</html>

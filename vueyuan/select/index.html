@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="component.css">
+    <script src="vue.js"></script>
+    <script src="component.js"></script>
+</head>
+<body>
+     <div class="root">
+         <custom-input @customevent="aafocus" :title="title"></custom-input>
+         <custom-list :list-data="all" :status="status" @customevent1="aaclick"></custom-list>
+     </div>
+</body>
+<script>
+    let root=new Vue({
+        el:".root",
+        data:{
+            all:[
+                {id:1, title:"111111"},
+                {id:2, title:"222222"},
+                {id:3, title:"333333"}
+            ],
+            status:false,
+            title:"",
+        },
+        methods:{
+            aafocus(){
+                this.status=true;
+            },
+            aaclick(title){
+               this.title=title;
+                this.status=false;
+            }
+        }
+    })
+</script>
+
+</html>

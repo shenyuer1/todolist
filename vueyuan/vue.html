@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.js"></script>
+</head>
+<script>
+//    class VUE{
+//        constructor(params) {
+//            this.create(params);
+//            this.mount();
+//        }
+//        //        1、创建对象并挂载属性
+//        create(params){
+//            for(var i in params.data){
+//                Object.defineProperty(this,i,{
+//                    get(){
+//                        return params.data[i];
+//                    },
+//                    set(val){
+//                        params.data[i]=val;
+//                    }
+//                })
+//                this[i]=params.data[i];
+//            }
+//            for (let i in params.methods){
+//                this[i] = params.methods[i];
+//            }
+//            this.el = params.el;
+//        }
+//        mount(){
+//            this.root=document.querySelector(this.el);
+//            var str=this.root.innerHTML;
+//            str=str.replace(/'/g,'"').replace(/\n/g,"");
+//            str=str.replace(/\{\{([^\{]+)\}\}/g,function(a,b){
+//                return "'+"+b+"+'";
+//            })
+//            var fn=new Function("obj","var tpl='';with(obj){tpl+='"+str+"'}\n return tpl");
+//            this.root.innerHTML=(fn(this));
+//        }
+//    }
+</script>
+<body>
+   <div class="app">
+       <!--{{name}}-->
+       <!--{{age}}-->
+       <!--{{sex}}-->
+       <!--<span @click="aa">name</span>-->
+       <!--<span @click="bb">age</span>-->
+       <!--<span @click="cc">sex</span>-->
+
+       <!--<input type="text" v-model="one">-->
+       <!--<input type="text" v-model="two">-->
+       <!--+-->
+       <!--<input type="text" v-model="three">-->
+       <!--+-->
+       <!--{{result}}-->
+       <span @click="aa">{{one}}</span>
+      +
+       <span @click="bb">{{two}}</span>
+       =
+       <span >{{sum}}</span>
+       <!--<custom></custom>-->
+       <custom :con="con"></custom>
+   </div>
+</body>
+<script>
+//    new Vue({
+//        el:".app",
+//        data:{
+//            name:"zhangsan",
+//            age:"12",
+//            sex:"woman"
+//        },
+//        methods:{
+//            aa(){
+//                this.name="lisi"
+//            },
+//            bb(){
+//                this.age=Math.random()
+//            },
+//            cc(){
+//                this.sex="man"
+//            }
+//        },
+//    })
+Vue.component("custom",{
+    props:{con:String},
+    template:`<div @click="change()">{{name}}</div>`,
+    data(){
+        return {
+            name:this.con
+        }
+    },
+    methods:{
+        change(){
+            this.name=this.con
+        }
+    }
+})
+new Vue({
+        el:".app",
+        data:{
+            one:1,
+            two:2,
+            three:3,
+            sum:3,
+            con:"hahaha"
+        },
+    methods:{
+        result(){
+            console.log(1);
+            return this.two*1+this.three*1;
+        },
+        aa(){
+            this.one=this.one*1+1;
+        },
+        bb(){
+            this.two=this.two*1+1;
+        },
+
+    },
+//    computed:{
+//        result(){
+//            console.log(1);
+//            return this.two*1+this.three*1;
+//        }
+//    }
+      watch:{
+            one(val1,val2){
+                this.sum=this.one*1+this.two*1;
+            },
+            two(val1,val2){
+                this.sum=this.one*1+this.two*1;
+           }
+      }
+})
+</script>
+</html>
